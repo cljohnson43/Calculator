@@ -52,7 +52,6 @@
         android:onClick="onClick"
         android:text="\u232b"
         android:textSize="@dimen/btnTextSize"
-        android:background="@color/defaultBackground"
         app:layout_constraintEnd_toEndOf="@id/btnDivide"
         app:layout_constraintTop_toBottomOf="@id/glHorizontal"
         />
@@ -186,6 +185,7 @@
         app:layout_constraintTop_toBottomOf="@id/btnTwo"
         app:layout_constraintBottom_toBottomOf="parent"
         />
+
     <Button
         android:id="@+id/btnClear"
         android:layout_width="wrap_content"
@@ -193,11 +193,10 @@
         android:onClick="onClick"
         android:text="@string/btnClear"
         android:textSize="@dimen/btnTextSize"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnZero"
-        app:layout_constraintTop_toBottomOf="@id/vDivider"
         app:layout_constraintBottom_toTopOf="@id/btnSeven"
-        />
+        app:layout_constraintEnd_toStartOf="@id/btnZero"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vDivider" />
     <Button
         android:id="@+id/btnDivide"
         android:layout_width="wrap_content"

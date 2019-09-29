@@ -136,4 +136,19 @@ class MainActivity : AppCompatActivity() {
         return listOf()
     }
 
+    /*
+    fun evaluate(str: String): Unit {
+        var result: dynamic
+
+        try {
+            eval(str)
+
+        } catch (e: Throwable) {
+            tvResults.text = e.message
+           // TODO this section
+        }
+    }
+
+     */
+
 }
