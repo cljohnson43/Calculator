@@ -5,20 +5,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingRight="@dimen/screenPaddingRight"
+    android:paddingLeft="@dimen/screenPaddingLeft"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/tvInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/tvPaddingTop"
+        android:paddingRight="@dimen/tvPaddingRight"
+        android:paddingLeft="@dimen/tvPaddingLeft"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textSize="@dimen/tvTextSize"
+        android:cursorVisible="true"
+        android:gravity="right"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tvInput"
         />
     <TextView
         android:id="@+id/tvResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tvInput"
+        android:paddingTop="@dimen/tvPaddingTop"
+        android:paddingRight="@dimen/tvPaddingRight"
+        android:paddingLeft="@dimen/tvPaddingLeft"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textSize="@dimen/tvTextSize"
+        android:cursorVisible="false"
+        android:gravity="right"
         app:layout_constraintBottom_toTopOf="@id/glHorizontal"
         />
 
@@ -28,6 +44,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="250dp" />
+
+    <Button
+        android:id="@+id/btnBackspace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="\u232b"
+        android:textSize="@dimen/btnTextSize"
+        android:background="@color/defaultBackground"
+        app:layout_constraintEnd_toEndOf="@id/btnDivide"
+        app:layout_constraintTop_toBottomOf="@id/glHorizontal"
+        />
 
     <View
         android:id="@+id/vDivider"

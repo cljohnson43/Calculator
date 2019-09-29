@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="btnTextSize">25dp</dimen>
+    <dimen name="tvTextSize">45dp</dimen>
+    <dimen name="screenPaddingRight">10dp</dimen>
+    <dimen name="screenPaddingLeft">10dp</dimen>
+    <dimen name="tvPaddingTop">25dp</dimen>
+    <dimen name="tvPaddingRight">15dp</dimen>
+    <dimen name="tvPaddingLeft">15dp</dimen>
 </resources>
