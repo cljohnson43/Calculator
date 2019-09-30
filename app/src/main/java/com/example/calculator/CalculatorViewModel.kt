@@ -1,47 +1,73 @@
 package com.example.calculator
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import net.objecthunter.exp4j.Expression
 import net.objecthunter.exp4j.ExpressionBuilder
 
+const val MULTIPLY_CHAR = '*'
+const val DIVIDE_CHAR = '/'
+const val ADD_CHAR = '+'
+const val MODULO_CHAR = '%'
+const val SUBTRACT_CHAR = '-'
+
 class CalculatorViewModel : ViewModel() {
-    var inputExpression: String = ""
-    var results: String = ""
-    var lastEvaluatedExpression: String = ""
+    val inputExpression: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+
+    val results: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+
+    }
+
+    val lastEvaluatedExpression: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+
+    }
 
     fun update(btnID: Int): Unit {
+        var newExp: String = ""
+        var oldExp: String = inputExpression.value ?: ""
+        val closedOldExp = autoCloseParentheses(oldExp)
         when (btnID) {
-            R.id.btnOne -> inputExpression = addDigit(inputExpression, "1")
-            R.id.btnTwo -> inputExpression = addDigit(inputExpression, "2")
-            R.id.btnThree -> inputExpression = addDigit(inputExpression, "3")
-            R.id.btnFour -> inputExpression = addDigit(inputExpression, "4")
-            R.id.btnFive -> inputExpression = addDigit(inputExpression, "5")
-            R.id.btnSix -> inputExpression = addDigit(inputExpression, "6")
-            R.id.btnSeven -> inputExpression = addDigit(inputExpression, "7")
-            R.id.btnEight -> inputExpression = addDigit(inputExpression, "8")
-            R.id.btnNine -> inputExpression = addDigit(inputExpression, "9")
-            R.id.btnZero -> inputExpression = addDigit(inputExpression, "0") // TODO case where number starts w/ zero
-            R.id.btnClear -> inputExpression = ""
-            R.id.btnParentheses -> inputExpression = addParentheses(inputExpression)
-            R.id.btnPercent -> inputExpression = addOperation(inputExpression, MODULO_CHAR)
-            R.id.btnDivide -> inputExpression = addOperation(inputExpression, DIVIDE_CHAR)
-            R.id.btnMultiply -> inputExpression = addOperation(inputExpression, MULTIPLY_CHAR)
-            R.id.btnAdd -> inputExpression = addOperation(inputExpression, ADD_CHAR)
-            R.id.btnSubtract -> inputExpression = addOperation(inputExpression, SUBTRACT_CHAR)
-            R.id.btnDecimal -> inputExpression = addDecimal(inputExpression)
-            R.id.btnSign -> inputExpression = changeSign(inputExpression)
-            R.id.btnBackspace -> inputExpression = if (inputExpression.length == 0) inputExpression else "${inputExpression.dropLast(1)}"
-            R.id.btnEqual -> {
-                val lastExpr = autoCloseParentheses(inputExpression)
-                results = evaluate(lastExpr)
-                lastEvaluatedExpression = "$lastExpr = $results"
-                inputExpression = evaluate(lastExpr)
-            }
+            R.id.btnOne -> newExp = (addDigit(oldExp, "1"))
+            R.id.btnTwo -> newExp = addDigit(oldExp, "2")
+            R.id.btnThree -> newExp = addDigit(oldExp, "3")
+            R.id.btnFour -> newExp = addDigit(oldExp, "4")
+            R.id.btnFive -> newExp = addDigit(oldExp, "5")
+            R.id.btnSix -> newExp = addDigit(oldExp, "6")
+            R.id.btnSeven -> newExp = addDigit(oldExp, "7")
+            R.id.btnEight -> newExp = addDigit(oldExp, "8")
+            R.id.btnNine -> newExp = addDigit(oldExp, "9")
+            R.id.btnZero -> newExp = addDigit(oldExp, "0") // TODO case where number starts w/ zero
+            R.id.btnClear -> newExp = ""
+            R.id.btnParentheses -> newExp = addParentheses(oldExp)
+            R.id.btnPercent -> newExp = addOperation(oldExp, MODULO_CHAR)
+            R.id.btnDivide -> newExp = addOperation(oldExp, DIVIDE_CHAR)
+            R.id.btnMultiply -> newExp = addOperation(oldExp, MULTIPLY_CHAR)
+            R.id.btnAdd -> newExp = addOperation(oldExp, ADD_CHAR)
+            R.id.btnSubtract -> newExp = (addOperation(oldExp, SUBTRACT_CHAR))
+            R.id.btnDecimal -> newExp = (addDecimal(oldExp))
+            R.id.btnSign -> newExp = (changeSign(oldExp))
+            R.id.btnBackspace -> newExp = if (oldExp.length == 0) {
+                    oldExp
+                } else {
+                    "${oldExp.dropLast(1)}"
+                }
         }
 
-        results = evaluate(autoCloseParentheses(inputExpression))
+        if (btnID != R.id.btnEqual) {
+            results.postValue(evaluate(autoCloseParentheses(newExp)))
+            inputExpression.postValue(newExp)
+        } else {
+            val res = evaluate(closedOldExp)
+            results.postValue("")
+            lastEvaluatedExpression.postValue("$closedOldExp = $res")
+            inputExpression.postValue(res)
+        }
 
-        return
+    return
     }
 
 }
