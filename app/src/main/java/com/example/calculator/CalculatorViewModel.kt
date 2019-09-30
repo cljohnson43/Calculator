@@ -4,12 +4,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import net.objecthunter.exp4j.Expression
 import net.objecthunter.exp4j.ExpressionBuilder
+import kotlin.random.Random
 
-const val MULTIPLY_CHAR = '*'
-const val DIVIDE_CHAR = '/'
-const val ADD_CHAR = '+'
-const val MODULO_CHAR = '%'
-const val SUBTRACT_CHAR = '-'
+const val MULTIPLY_OP = "*"
+const val DIVIDE_OP = "/"
+const val ADD_OP = "+"
+const val MODULO_OP = "%"
+const val SUBTRACT_OP = "-"
+const val SIN_OP = "sin("
+const val COS_OP = "cos("
+const val TAN_OP = "tan("
+const val LOG_OP = "log("
+const val ABS_OP = "abs("
+
+enum class Ends {
+    EMPTY, OPEN_PARENTHESES, CLOSED_PARENTHESES, INFIX_OPERATOR, PREFIX_OPERATOR, INT, REAL
+}
 
 class CalculatorViewModel : ViewModel() {
     val inputExpression: MutableLiveData<String> by lazy {
@@ -26,29 +36,31 @@ class CalculatorViewModel : ViewModel() {
 
     }
 
+    var endsWith: Ends = Ends.EMPTY
+
     fun update(btnID: Int): Unit {
         var newExp: String = ""
         var oldExp: String = inputExpression.value ?: ""
         val closedOldExp = autoCloseParentheses(oldExp)
         when (btnID) {
-            R.id.btnOne -> newExp = (addDigit(oldExp, "1"))
-            R.id.btnTwo -> newExp = addDigit(oldExp, "2")
-            R.id.btnThree -> newExp = addDigit(oldExp, "3")
-            R.id.btnFour -> newExp = addDigit(oldExp, "4")
-            R.id.btnFive -> newExp = addDigit(oldExp, "5")
-            R.id.btnSix -> newExp = addDigit(oldExp, "6")
-            R.id.btnSeven -> newExp = addDigit(oldExp, "7")
-            R.id.btnEight -> newExp = addDigit(oldExp, "8")
-            R.id.btnNine -> newExp = addDigit(oldExp, "9")
-            R.id.btnZero -> newExp = addDigit(oldExp, "0") // TODO case where number starts w/ zero
-            R.id.btnClear -> newExp = ""
-            R.id.btnParentheses -> newExp = addParentheses(oldExp)
-            R.id.btnPercent -> newExp = addOperation(oldExp, MODULO_CHAR)
-            R.id.btnDivide -> newExp = addOperation(oldExp, DIVIDE_CHAR)
-            R.id.btnMultiply -> newExp = addOperation(oldExp, MULTIPLY_CHAR)
-            R.id.btnAdd -> newExp = addOperation(oldExp, ADD_CHAR)
-            R.id.btnSubtract -> newExp = (addOperation(oldExp, SUBTRACT_CHAR))
-            R.id.btnDecimal -> newExp = (addDecimal(oldExp))
+            R.id.btnOne -> this.addDigit("1")
+            R.id.btnTwo -> this.addDigit("2")
+            R.id.btnThree -> this.addDigit("3")
+            R.id.btnFour -> this.addDigit("4")
+            R.id.btnFive -> this.addDigit("5")
+            R.id.btnSix -> this.addDigit("6")
+            R.id.btnSeven -> this.addDigit("7")
+            R.id.btnEight -> this.addDigit("8")
+            R.id.btnNine -> this.addDigit("9")
+            R.id.btnZero -> this.addDigit("0") // TODO case where number starts w/ zero
+            R.id.btnClear -> this.clear()
+            R.id.btnParentheses -> this.addParentheses()
+            R.id.btnPercent -> this.addInfixOperation(MODULO_OP)
+            R.id.btnDivide -> this.addInfixOperation(DIVIDE_OP)
+            R.id.btnMultiply -> this.addInfixOperation( MULTIPLY_OP)
+            R.id.btnAdd -> this.addInfixOperation(ADD_OP)
+            R.id.btnSubtract -> this.addInfixOperation(SUBTRACT_OP)
+            R.id.btnDecimal -> this.addDecimal()
             R.id.btnBackspace -> newExp = if (oldExp.length == 0) {
                     oldExp
                 } else {
@@ -58,7 +70,6 @@ class CalculatorViewModel : ViewModel() {
 
         if (btnID != R.id.btnEqual) {
             results.postValue(evaluate(autoCloseParentheses(newExp)))
-            inputExpression.postValue(newExp)
         } else {
             val res = evaluate(closedOldExp)
             results.postValue("")
@@ -69,10 +80,96 @@ class CalculatorViewModel : ViewModel() {
     return
     }
 
+    private fun addDigit(digit: String) {
+        var str: String = this.inputExpression.value ?: ""
+        when (this.endsWith) {
+            Ends.CLOSED_PARENTHESES -> {
+                this.inputExpression.postValue("$str$ MULTIPLY_OP$digit")
+                this.endsWith = Ends.INT
+            }
+            Ends.REAL -> {
+                this.inputExpression.postValue("$str$digit")
+            }
+            else -> {
+                this.inputExpression.postValue("$str$digit")
+                this.endsWith = Ends.INT
+            }
+        }
+    }
+
+    private fun addInfixOperation(op: String) {
+        var str = this.inputExpression.value ?: ""
+
+        when (this.endsWith) {
+            Ends.REAL, Ends.INT, Ends.CLOSED_PARENTHESES -> {
+                this.inputExpression.postValue("$str$op")
+                this.endsWith = Ends.INFIX_OPERATOR
+            }
+        }
+    }
+
+    private fun addParentheses() {
+        var str = this.inputExpression.value ?: ""
+
+        when (this.endsWith) {
+            Ends.EMPTY -> {
+                this.inputExpression.postValue("(")
+                this.endsWith = Ends.OPEN_PARENTHESES
+            }
+            Ends.OPEN_PARENTHESES, Ends.INFIX_OPERATOR, Ends.PREFIX_OPERATOR -> {
+                this.inputExpression.postValue("$str(")
+                this.endsWith = Ends.OPEN_PARENTHESES
+            }
+            Ends.CLOSED_PARENTHESES, Ends.REAL, Ends.INT -> {
+                if (hasUnclosedParentheses(str)) {
+                    this.inputExpression.postValue("$str)")
+                    this.endsWith = Ends.CLOSED_PARENTHESES
+                } else {
+                    this.inputExpression.postValue("$str$ MULTIPLY_OP(")
+                    this.endsWith = Ends.OPEN_PARENTHESES
+                }
+            }
+        }
+    }
+
+    private fun addDecimal() {
+        var str = this.inputExpression.value ?: ""
+
+        when (this.endsWith) {
+            Ends.EMPTY -> {
+                this.inputExpression.postValue("0.")
+                this.endsWith = Ends.REAL
+            }
+            Ends.REAL -> {
+                return
+            }
+            Ends.INT -> {
+                this.inputExpression.postValue("$str.")
+                this.endsWith = Ends.REAL
+            }
+            Ends.OPEN_PARENTHESES, Ends.INFIX_OPERATOR, Ends.PREFIX_OPERATOR -> {
+                this.inputExpression.postValue("${str}0.")
+                this.endsWith = Ends.REAL
+            }
+            Ends.CLOSED_PARENTHESES -> {
+                this.inputExpression.postValue("${str}${ MULTIPLY_OP}0.")
+                this.endsWith = Ends.REAL
+            }
+
+        }
+    }
+
+    private fun clear() {
+        var str = this.inputExpression.value ?: ""
+        if (str.length > 0) {
+            this.inputExpression.postValue("")
+        }
+        this.endsWith = Ends.EMPTY
+    }
 }
 
 fun addDigit(str: String, digit: String): String {
-    return if (endsWith(str, ')')) "$str$MULTIPLY_CHAR$digit" else "$str$digit"
+    return if (endsWith(str, ')')) "$str$ MULTIPLY_OP$digit" else "$str$digit"
 }
 
 fun addOperation(str: String, op: Char): String {
@@ -86,7 +183,7 @@ fun addParentheses(str: String): String {
     if (endsWithOperation(str)) return "$str("
     if (endsWithOperand(str)) {
         if (hasUnclosedParentheses(str)) return "$str)"
-        return "$str$MULTIPLY_CHAR("
+        return "$str$ MULTIPLY_OP("
     }
 
     // must end with (
@@ -100,7 +197,7 @@ fun addDecimal(str: String): String {
         return "$str."
     }
     if (endsWithOperation(str) || endsWith(str, '(')) return "${str}0."
-    if (endsWith(str, ')')) return "$str${MULTIPLY_CHAR}0."
+    if (endsWith(str, ')')) return "$str${ MULTIPLY_OP}0."
     return str
 }
 

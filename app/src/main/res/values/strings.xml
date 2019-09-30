@@ -20,4 +20,9 @@
     <string name="btnMultiply">*</string>
     <string name="btnSign">+/-</string>
     <string name="btnDecimal">.</string>
+    <string name="btnSin">sin</string>
+    <string name="btnCos">cos</string>
+    <string name="btnTan">tan</string>
+    <string name="btnLn">ln</string>
+    <string name="btnLog">log</string>
 </resources>

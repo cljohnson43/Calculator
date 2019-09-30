@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
-class CoreButtonsFragment : Fragment() {
-
+class ScientificButtonsFragment : Fragment() {
     private lateinit var model: CalculatorViewModel
 
     override fun onCreateView(
@@ -16,15 +15,14 @@ class CoreButtonsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.core_buttons, container, false)
+        return inflater.inflate(R.layout.scientific_buttons, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         model = activity?.run {
-            ViewModelProvider(this,
-                ViewModelProvider.NewInstanceFactory()).get(CalculatorViewModel::class.java)
+            ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(CalculatorViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
