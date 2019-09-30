@@ -11,16 +11,16 @@
     >
 
     <Button
-        android:id="@+id/btnBackspace"
+        android:id="@+id/btnParentheses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="\u232b"
+        android:text="@string/btnParentheses"
         android:textSize="@dimen/btnTextSize"
-        app:layout_constraintStart_toStartOf="@id/btnDivide"
-        app:layout_constraintEnd_toEndOf="@id/btnDivide"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/vDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnZero"
+        app:layout_constraintTop_toBottomOf="@id/btnOne"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
     <View
@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider"
-        app:layout_constraintTop_toBottomOf="@id/btnBackspace"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btnClear"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnTwo"
         app:layout_constraintTop_toBottomOf="@id/btnFour"
-        app:layout_constraintBottom_toTopOf="@id/btnSign"
+        app:layout_constraintBottom_toTopOf="@id/btnParentheses"
         />
     <Button
         android:id="@+id/btnTwo"
@@ -127,7 +127,7 @@
         android:textSize="@dimen/btnTextSize"
         app:layout_constraintStart_toEndOf="@id/btnSeven"
         app:layout_constraintEnd_toStartOf="@id/btnNine"
-        app:layout_constraintTop_toBottomOf="@id/btnParentheses"
+        app:layout_constraintTop_toBottomOf="@id/btnBackspace"
         app:layout_constraintBottom_toTopOf="@id/btnFive"
         />
     <Button
@@ -149,7 +149,7 @@
         android:onClick="onClick"
         android:text="@string/btnZero"
         android:textSize="@dimen/btnTextSize"
-        app:layout_constraintStart_toEndOf="@id/btnSign"
+        app:layout_constraintStart_toEndOf="@id/btnParentheses"
         app:layout_constraintEnd_toStartOf="@id/btnDecimal"
         app:layout_constraintTop_toBottomOf="@id/btnTwo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -163,7 +163,7 @@
         android:text="@string/btnClear"
         android:textSize="@dimen/btnTextSize"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnZero"
+        app:layout_constraintEnd_toStartOf="@id/btnBackspace"
         app:layout_constraintTop_toBottomOf="@id/vDivider"
         app:layout_constraintBottom_toTopOf="@id/btnSeven"
         />
@@ -240,35 +240,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
     <Button
-        android:id="@+id/btnSign"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="@string/btnSign"
-        android:textSize="@dimen/btnTextSize"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnZero"
-        app:layout_constraintTop_toBottomOf="@id/btnOne"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-    <Button
         android:id="@+id/btnPercent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
         android:text="@string/btnPercent"
         android:textSize="@dimen/btnTextSize"
-        app:layout_constraintStart_toEndOf="@id/btnParentheses"
+        app:layout_constraintStart_toEndOf="@id/btnBackspace"
         app:layout_constraintEnd_toStartOf="@id/btnDivide"
         app:layout_constraintTop_toBottomOf="@id/vDivider"
         app:layout_constraintBottom_toTopOf="@id/btnNine"
         />
     <Button
-        android:id="@+id/btnParentheses"
+        android:id="@+id/btnBackspace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
-        android:text="@string/btnParentheses"
+        android:text="\u232b"
         android:textSize="@dimen/btnTextSize"
         app:layout_constraintStart_toEndOf="@id/btnClear"
         app:layout_constraintEnd_toStartOf="@id/btnPercent"

@@ -23,6 +23,7 @@
         android:cursorVisible="true"
         android:gravity="right"
         app:layout_constraintTop_toBottomOf="@id/tvLastEvaluatedExpression"
+        app:layout_constraintBottom_toTopOf="@id/tvResults"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
@@ -50,31 +51,25 @@
         android:paddingTop="@dimen/tvPaddingTop"
         android:paddingRight="@dimen/tvPaddingRight"
         android:paddingLeft="@dimen/tvPaddingLeft"
+        android:layout_marginTop="@dimen/tvResultsMarginTop"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:textSize="@dimen/tvTextSize"
         android:cursorVisible="false"
         android:gravity="right"
-        app:layout_constraintBottom_toTopOf="@id/glHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/tvInput"
+        app:layout_constraintBottom_toTopOf="@id/fCoreButtons"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/glHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="250dp" />
-
     <fragment
         android:id="@+id/fCoreButtons"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:name="com.example.calculator.CoreButtonsFragment"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/glHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/tvResults"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 

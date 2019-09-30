@@ -49,7 +49,6 @@ class CalculatorViewModel : ViewModel() {
             R.id.btnAdd -> newExp = addOperation(oldExp, ADD_CHAR)
             R.id.btnSubtract -> newExp = (addOperation(oldExp, SUBTRACT_CHAR))
             R.id.btnDecimal -> newExp = (addDecimal(oldExp))
-            R.id.btnSign -> newExp = (changeSign(oldExp))
             R.id.btnBackspace -> newExp = if (oldExp.length == 0) {
                     oldExp
                 } else {
@@ -129,34 +128,6 @@ fun endsWithOperand(str: String): Boolean {
 
 fun hasUnclosedParentheses(str: String): Boolean {
     return str.count { it == '(' } > str.count { it == ')' }
-}
-
-fun isValidExpression(str: String): Boolean {
-    return false // TODO
-}
-
-fun changeSign(str: String): String {
-    if (str.length == 0) return "($SUBTRACT_CHAR"
-    if (endsWithDigit(str)) {
-        // handle turning negative to positive
-        // handle turning pos to neg
-    }
-    return "" //TODO
-
-}
-
-fun getNumbers(str: String): List<Long> {
-    val charArr = str.toCharArray()
-    var nums: List<Long>
-
-    var startOfNum: Int? = null
-    for (i in charArr.indices) {
-        if (charArr[i].isDigit()) {
-            startOfNum = startOfNum ?: i
-        } else {}
-
-    }
-    return listOf()
 }
 
 fun evaluate(str: String): String {

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btnTextSize">10sp</dimen>
+    <dimen name="btnBackspaceMarginBottom">5dp</dimen>
+    <dimen name="tvTextSize">13sp</dimen>
+    <dimen name="tvPaddingTop">5dp</dimen>
+</resources>
